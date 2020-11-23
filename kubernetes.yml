@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: satellite-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: satellite-api
+  template:
+    metadata:
+      labels:
+        component: satellite-api
+    spec:
+      containers:
+        - name: satellite-api
+          image: ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/satellite-api:VERSION
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: satellite-api-cluster-ip
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+  type: LoadBalancer
+  selector:
+    component: satellite-api
+  ports:
+    - protocol: TCP
+      port:  80
+      targetPort:  5000
