@@ -28,6 +28,8 @@ namespace SatelliteApi
             services.AddControllers();
             // added singleton service to replicate static database for GUID
             services.AddSingleton<ISatelliteRepo, SatelliteMemoryRepo>();
+            // health checks
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +47,7 @@ namespace SatelliteApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/healthcheck");
             });
         }
     }

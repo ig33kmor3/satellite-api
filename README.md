@@ -1,5 +1,12 @@
 # Satellite API Demo with EKS Pipeline
 
+## API Routes
+
+| Method        | Route                  |
+| ---           | ---                    |
+| GET -->       | /v1/satellites         |
+| GET -->       | /healthcheck           |
+
 ## Initial .Net 5 Project Setup
 ```bash
 mkdir SatelliteApi
