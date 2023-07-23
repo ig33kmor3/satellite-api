@@ -14,5 +14,6 @@ RUN ls -la /app/out/*
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build-env /app/out .
+ENV ASPNETCORE_URLS=http://+:5298
 ENTRYPOINT ["dotnet", "SatelliteApi.dll"]
 EXPOSE 5298/tcp
