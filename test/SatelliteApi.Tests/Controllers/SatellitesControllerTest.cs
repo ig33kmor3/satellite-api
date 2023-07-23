@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SatelliteApi.Models;
@@ -10,16 +12,16 @@ using Xunit;
 
 namespace SatelliteApi.Tests.Controllers
 {
-    public class SatellitesControllerTest
+    
+    public class SatellitesControllerTest : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly TestServer _server;
-        private readonly HttpClient _client;
+        private readonly WebApplicationFactory<Program> _factory;
         private readonly List<Satellite> _satellitesTestResponse;
         
-        public SatellitesControllerTest()
+        // https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-7.0
+        public SatellitesControllerTest(WebApplicationFactory<Program> factory)
         {
-            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            _client = _server.CreateClient();
+            _factory = factory;
             _satellitesTestResponse = new List<Satellite>()
             {
                 new Satellite(){ Id = "d4913292-f1c4-4f5e-9ec9-e61eb9b7563e" , Name = "ANASIS-II", MissionDuration = "15 years", Mass = "6000kg" },
@@ -32,7 +34,13 @@ namespace SatelliteApi.Tests.Controllers
         [Fact]
         public async Task TestGetSatellitesAsync()
         {
-            var response = await _client.GetAsync("/v1/satellites");
+            // Arrange
+            var client = _factory.CreateClient();
+            
+            // Act
+            var response = await client.GetAsync("/v1/satellites");
+            
+            // Assert
             response.EnsureSuccessStatusCode();
             var satellites = await response.Content.ReadAsStringAsync();
             Assert.Equal(JsonConvert.SerializeObject(_satellitesTestResponse, new JsonSerializerSettings 

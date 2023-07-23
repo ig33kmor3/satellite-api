@@ -21,7 +21,7 @@ dotnet add test/SatelliteApi.Tests/SatelliteApi.Tests.csproj reference src/Satel
 ## Docker Configuration 
 
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -34,7 +34,7 @@ RUN dotnet publish -c Release -o out
 RUN ls -la /app/out/*
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "SatelliteApi.dll"]
@@ -43,5 +43,5 @@ EXPOSE 5000/tcp
 
 ```bash
 docker build -t satellite-api:1.0.0 . 
-docker run -p 5000:5000 satellite-api:1.0.0
+docker run -p 5298:5298 satellite-api:1.0.0
 ```

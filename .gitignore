@@ -10,6 +10,7 @@ riderModule.iml
 .vs/
 build/
 packaged.yaml
+SatelliteApi.sln.DotSettings.user
 
 # Created by https://www.gitignore.io/api/osx,node,linux,windows
 
