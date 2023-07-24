@@ -7,7 +7,7 @@
 | GET -->       | /v1/satellites         |
 | GET -->       | /healthcheck           |
 
-## Initial .Net 5 Project Setup
+## Initial .Net 7 Project Setup
 ```bash
 mkdir SatelliteApi
 mkdir {src,test}
